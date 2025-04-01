@@ -7,3 +7,9 @@ services:
       - 'POSTGRES_USER=${JDBC_DATABASE_USERNAME}'
     ports:
       - '5432'
+    networks:
+      - demo-network
+
+networks:
+  demo-network:
+    driver: bridge
