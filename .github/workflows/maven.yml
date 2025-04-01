@@ -68,4 +68,4 @@ jobs:
         run: mvn -B -q package --file pom.xml
 
       - name: Submit Dependency Snapshot
-        uses: advanced-security/maven-dependency-submission-action@v4
+        uses: advanced-security/maven-dependency-submission-action@v4.1.0
