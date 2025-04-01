@@ -30,8 +30,9 @@ jobs:
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
+          sudo ls -lha .
       - name: Set up Docker Compose
-        run: docker-compose -f ./demo/compose.yaml up -d
+        run: docker-compose -f demo/compose.yaml up -d
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
