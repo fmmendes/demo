@@ -16,6 +16,15 @@ jobs:
         ports:
           - 5432:5432
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          cache: maven
+
       - name: Set environment variables
         env:
           JDBC_DATABASE_URL: jdbc:postgresql://localhost:5432/demo
@@ -32,21 +41,14 @@ jobs:
             echo "Docker Compose installation failed"
             exit 1
           fi
+          pwd
+          ls -lha
 
       - name: Set up Docker Compose
         env:
           JDBC_DATABASE_USERNAME: ${{ secrets.JDBC_DATABASE_USERNAME }}
           JDBC_DATABASE_PASSWORD: ${{ secrets.JDBC_DATABASE_PASSWORD }}
         run: docker-compose -f compose.yaml up -d
-
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'corretto'
-          cache: maven
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
