@@ -1,12 +1,9 @@
-name: Java Build with Maven
+name: Build
 
 on:
   pull_request:
   push:
     branches: [ develop, main ]
-
-permissions:
-  contents: write
 
 concurrency:
   group: ci-${{ github.ref }}-group
@@ -66,6 +63,3 @@ jobs:
           JDBC_DATABASE_USERNAME: ${{ secrets.JDBC_DATABASE_USERNAME }}
           JDBC_DATABASE_PASSWORD: ${{ secrets.JDBC_DATABASE_PASSWORD }}
         run: mvn -B -q package --file pom.xml
-
-      - name: Submit Dependency Snapshot
-        uses: advanced-security/maven-dependency-submission-action@v4.1.0
