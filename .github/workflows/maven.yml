@@ -3,7 +3,7 @@ name: Java Build with Maven
 on:
   pull_request:
   push:
-    branches: [develop, main]
+    branches: [ develop, main ]
 
 concurrency:
   group: ci-${{ github.ref }}-group
