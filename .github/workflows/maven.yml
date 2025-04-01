@@ -25,13 +25,6 @@ jobs:
           distribution: 'corretto'
           cache: maven
 
-      - name: Set environment variables
-        env:
-          JDBC_DATABASE_URL: jdbc:postgresql://localhost:5432/demo
-          JDBC_DATABASE_USERNAME: ${{ secrets.JDBC_DATABASE_USERNAME }}
-          JDBC_DATABASE_PASSWORD: ${{ secrets.JDBC_DATABASE_PASSWORD }}
-        run: echo "Environment variables set"
-
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -51,6 +44,10 @@ jobs:
         run: docker-compose -f compose.yaml up -d
 
       - name: Build with Maven
+        env:
+          JDBC_DATABASE_URL: jdbc:postgresql://localhost:5432/demo
+          JDBC_DATABASE_USERNAME: ${{ secrets.JDBC_DATABASE_USERNAME }}
+          JDBC_DATABASE_PASSWORD: ${{ secrets.JDBC_DATABASE_PASSWORD }}
         run: mvn -B package --file pom.xml
 
       - name: Update dependency graph
