@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build:
-    name: [ ${ { github.ref_name } } ] Build
+    name: "[${{github.ref_name}}] Build"
     runs-on: ubuntu-latest
 
     steps:
