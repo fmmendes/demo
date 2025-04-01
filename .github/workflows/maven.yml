@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Java Build with Maven
 
 on:
   push:
@@ -9,12 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      docker:
-        image: docker:20.10.7
-        options: --privileged
-        ports:
-          - 5432:5432
     steps:
       - uses: actions/checkout@v4
 
@@ -45,7 +39,7 @@ jobs:
 
       - name: Build with Maven
         env:
-          JDBC_DATABASE_URL: jdbc:postgresql://localhost:5432/demo
+          JDBC_DATABASE_URL: ${{ secrets.JDBC_DATABASE_URL }}
           JDBC_DATABASE_USERNAME: ${{ secrets.JDBC_DATABASE_USERNAME }}
           JDBC_DATABASE_PASSWORD: ${{ secrets.JDBC_DATABASE_PASSWORD }}
         run: mvn -B package --file pom.xml
