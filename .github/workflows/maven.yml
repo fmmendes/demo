@@ -1,14 +1,19 @@
 name: Java Build with Maven
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+  push:
+    branches: [develop, main]
+
+concurrency:
+  group: ci-${{ github.ref }}-group
+  cancel-in-progress: true
 
 jobs:
   build:
+    name: [ ${ { github.ref_name } } ] Build
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -36,6 +41,13 @@ jobs:
           JDBC_DATABASE_USERNAME: ${{ secrets.JDBC_DATABASE_USERNAME }}
           JDBC_DATABASE_PASSWORD: ${{ secrets.JDBC_DATABASE_PASSWORD }}
         run: docker-compose -f compose.yaml up -d
+
+      - name: Wait for PostgreSQL
+        run: |
+          echo "Waiting for PostgreSQL to be ready..."
+          until docker exec $(docker ps -q -f name=postgres) pg_isready; do
+            sleep 1
+          done
 
       - name: Build with Maven
         env:
